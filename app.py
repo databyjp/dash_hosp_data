@@ -153,6 +153,8 @@ def add_refline(fig, x0, x1, y0, y1, text):
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
+server = app.server
+
 navbar = dbc.NavbarSimple(
     brand="Healthcare infrastructure data dashboard",
     brand_href="#",
@@ -476,4 +478,4 @@ def update_bar(var1, x_log, country_type, color_var):
 
 
 if __name__ == '__main__':
-     app.run_server(debug=True)
+     app.run_server(debug=False)
