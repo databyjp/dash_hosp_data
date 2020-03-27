@@ -49,7 +49,7 @@ def make_beds_sim(max_days):
     df_list = list()
     for n in [2, 3, 4, 5, 6, 8, 10, 12, 15, 20]:
         #  = 2 ^ (1/C$2) * C3 = 2 ^ (1/C$2) * 2 ^ (1/C$2)
-        temp_df = pd.DataFrame([dict(x=x, y=round((2 ** (2/n)) ** x, 0), n=str(n) + ' days') for x in x_vals if ((2 ** (2/n)) ** x) < max_beds*2])
+        temp_df = pd.DataFrame([dict(x=x, y=round((2 ** (1/n * x)), 0), n=str(n) + ' days') for x in x_vals if ((2 ** (1/n)) ** x) < max_beds*2])
         df_list.append(temp_df)
     growth_df = pd.concat(df_list, axis=0).reset_index(drop=True)
 
@@ -420,7 +420,7 @@ app.layout = html.Div(children=[navbar, body])
 )
 def update_beds_sim(beds_avail, ref_country_list):
 
-    max_days = 90
+    max_days = 180
     fig = make_beds_sim(max_days)
 
     for ref_country in ref_country_list:
