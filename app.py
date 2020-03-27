@@ -69,12 +69,12 @@ def make_beds_sim(max_days):
     return fig
 
 
-def make_scatter_comp(in_df, var1, var2, x_log, y_log):
+def make_scatter_comp(in_df, var1, var2, x_log, y_log, names_list):
 
-    # overlays = in_df['country'].apply(lambda x: x if x in names_list else '').values
+    overlays = in_df['country'].apply(lambda x: x if x in names_list else '').values
 
     fig = px.scatter(in_df, x=var1, y=var2, log_x=x_log, log_y=y_log,
-                     # text=overlays,
+                     text=overlays,
                      title=data_labels[var1] + ' vs ' + data_labels[var2],
                      labels=data_labels,
                      color='continent', size="population", size_max=25,
@@ -287,30 +287,34 @@ body = dbc.Container(children=[
             check=True,
         )], md=6)
     ]),
-    # dbc.Row([
-    #     dbc.Col([
-    #         dbc.Badge("(Cosmetic) Show text for:", color="secondary", className="mr-1"),
-    #         dbc.FormGroup([
-    #             dcc.Dropdown(
-    #                 id='scatter_name_overlay',
-    #                 options=[{'label': k, 'value': k} for k in np.sort(df.country.unique())],
-    #                 value=['China'],
-    #                 multi=True,
-    #                 style={'width': '100%'}
-    #             )],
-    #         )], md=6
-    #     ),
-    # ]),
-    dcc.Loading(
-        id="loading-scatter_one",
-        children=[
-            dcc.Graph(
-                'scatter_one',
-                config={'displayModeBar': False}
-            ),
-        ],
-        type="circle",
-    ),
+    dbc.Row([
+        dbc.Col([
+            dbc.Badge("(Cosmetic) Show text for:", color="secondary", className="mr-1"),
+            dbc.FormGroup([
+                dcc.Dropdown(
+                    id='scatter_name_overlay',
+                    options=[{'label': k, 'value': k} for k in np.sort(df.country.unique())],
+                    value=['China'],
+                    multi=True,
+                    style={'width': '100%'}
+                )],
+            )], md=6
+        ),
+    ]),
+    # dcc.Loading(
+    #     id="loading-scatter_one",
+    #     children=[
+    #         dcc.Graph(
+    #             'scatter_one',
+    #             config={'displayModeBar': False}
+    #         ),
+    #     ],
+    #     type="circle",
+    # ),
+    dcc.Graph(
+        'scatter_one',
+        config={'displayModeBar': False}
+    ),    
     dbc.Row([
         dcc.Markdown(
             """
@@ -430,18 +434,17 @@ def update_beds_sim(beds_avail, ref_country_list):
     Output('scatter_one', 'figure'),
     [Input('scatter_xvar', 'value'), Input('scatter_yvar', 'value'),
      Input('scatter_x_log_radio', 'checked'), Input('scatter_y_log_radio', 'checked'),
-     # Input('scatter_name_overlay', 'value')
+     Input('scatter_name_overlay', 'value')
      ]
 )
-def update_scatter(var1, var2, x_log, y_log):
+def update_scatter(var1, var2, x_log, y_log, names):
 
-    # # if var1 != var2:
-    # if type(names) == list:
-    #     names_list = names
-    # else:
-    #     names_list = [names]
+    if type(names) == list:
+        names_list = names
+    else:
+        names_list = [names]
 
-    fig = make_scatter_comp(df, var1, var2, x_log, y_log)
+    fig = make_scatter_comp(df, var1, var2, x_log, y_log, names_list)
 
     return fig
 
