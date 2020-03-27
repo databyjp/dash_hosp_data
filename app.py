@@ -26,7 +26,7 @@ df = pd.read_csv('srcdata/tidy_health_data.csv', index_col=0)
 data_columns = {
     'hosp_beds': 'Hospital beds per 1000 people',
     'health_exp': 'Healthcare expenditure per capita (USD)',
-    'old_population': 'Population 65 or above',
+    'old_population': 'Population 65 or above (%)',
     'physicians': 'Physicians per 1000 people',
     'gdp_cap': 'GDP per capita (USD)',
 }
